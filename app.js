@@ -2,26 +2,51 @@
 const API_KEY = 'a52d485047e5453bb57836708cf90ad8';
 const API_BASE_URL = 'https://newsapi.org/v2/everything';
 
+// Topics to fetch
+const TOPICS = [
+    { query: 'finance ai', label: 'Finance AI', color: '#667eea' },
+    { query: 'Accounting ai', label: 'Accounting AI', color: '#f093fb' },
+    { query: 'Marketing ai', label: 'Marketing AI', color: '#4facfe' }
+];
+
 // DOM elements
-const searchBtn = document.getElementById('searchBtn');
-const searchQuery = document.getElementById('searchQuery');
-const fromDate = document.getElementById('fromDate');
-const sortBy = document.getElementById('sortBy');
 const loading = document.getElementById('loading');
 const error = document.getElementById('error');
 const totalResults = document.getElementById('totalResults');
 const articlesContainer = document.getElementById('articles');
+const fromDate = document.getElementById('fromDate');
+const sortBy = document.getElementById('sortBy');
+const refreshBtn = document.getElementById('refreshBtn');
 
-// Fetch news from API
-async function fetchNews() {
-    const query = searchQuery.value.trim();
+// Fetch news for a single topic
+async function fetchTopicNews(topic, date, sort) {
+    const url = `${API_BASE_URL}?q=${encodeURIComponent(topic.query)}&from=${date}&sortBy=${sort}&apiKey=${API_KEY}`;
+
+    const req = new Request(url);
+    const response = await fetch(req);
+
+    if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    if (data.status === 'ok') {
+        // Add category info to each article
+        return data.articles.map(article => ({
+            ...article,
+            category: topic.label,
+            categoryColor: topic.color
+        }));
+    } else {
+        throw new Error(data.message || 'Failed to fetch news');
+    }
+}
+
+// Fetch news from all topics
+async function fetchAllNews() {
     const date = fromDate.value;
     const sort = sortBy.value;
-
-    if (!query) {
-        showError('Please enter a search query');
-        return;
-    }
 
     // Show loading, hide error and results
     loading.classList.remove('hidden');
@@ -30,22 +55,19 @@ async function fetchNews() {
     totalResults.innerHTML = '';
 
     try {
-        const url = `${API_BASE_URL}?q=${encodeURIComponent(query)}&from=${date}&sortBy=${sort}&apiKey=${API_KEY}`;
+        // Fetch all topics in parallel
+        const promises = TOPICS.map(topic => fetchTopicNews(topic, date, sort));
+        const results = await Promise.all(promises);
 
-        const req = new Request(url);
-        const response = await fetch(req);
+        // Combine all articles
+        const allArticles = results.flat();
 
-        if (!response.ok) {
-            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        if (allArticles.length === 0) {
+            totalResults.innerHTML = '<p>No articles found.</p>';
+            return;
         }
 
-        const data = await response.json();
-
-        if (data.status === 'ok') {
-            displayResults(data);
-        } else {
-            throw new Error(data.message || 'Failed to fetch news');
-        }
+        displayResults(allArticles);
     } catch (err) {
         showError(`Error fetching news: ${err.message}`);
     } finally {
@@ -54,15 +76,28 @@ async function fetchNews() {
 }
 
 // Display news results
-function displayResults(data) {
-    const { totalResults: total, articles } = data;
+function displayResults(articles) {
+    const total = articles.length;
 
     if (total === 0) {
-        totalResults.innerHTML = '<p>No articles found. Try a different search.</p>';
+        totalResults.innerHTML = '<p>No articles found.</p>';
         return;
     }
 
-    totalResults.innerHTML = `<p>Found <strong>${total.toLocaleString()}</strong> articles</p>`;
+    // Count articles by category
+    const categoryCounts = {};
+    articles.forEach(article => {
+        categoryCounts[article.category] = (categoryCounts[article.category] || 0) + 1;
+    });
+
+    const categoryBreakdown = Object.entries(categoryCounts)
+        .map(([cat, count]) => `${cat}: ${count}`)
+        .join(' | ');
+
+    totalResults.innerHTML = `
+        <p>Found <strong>${total}</strong> articles across all AI categories</p>
+        <p class="category-breakdown">${categoryBreakdown}</p>
+    `;
 
     articles.forEach(article => {
         const articleCard = createArticleCard(article);
@@ -93,6 +128,7 @@ function createArticleCard(article) {
     card.innerHTML = `
         ${image}
         <div class="article-content">
+            <span class="category-badge" style="background: ${article.categoryColor}">${article.category}</span>
             <div class="article-meta">
                 <span class="source">${source}</span>
                 <span class="date">${date}</span>
@@ -117,15 +153,12 @@ function showError(message) {
 }
 
 // Event listeners
-searchBtn.addEventListener('click', fetchNews);
+refreshBtn.addEventListener('click', fetchAllNews);
 
-searchQuery.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        fetchNews();
-    }
-});
+fromDate.addEventListener('change', fetchAllNews);
+sortBy.addEventListener('change', fetchAllNews);
 
 // Load initial news on page load
 window.addEventListener('DOMContentLoaded', () => {
-    fetchNews();
+    fetchAllNews();
 });

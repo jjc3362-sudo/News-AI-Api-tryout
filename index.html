@@ -9,19 +9,24 @@
 <body>
     <div class="container">
         <header>
-            <h1>📰 News AI App</h1>
-            <p>Stay updated with the latest news</p>
+            <h1>📰 AI News Dashboard</h1>
+            <p>Tracking the latest in Finance AI, Accounting AI & Marketing AI</p>
         </header>
 
+        <div class="topics-info">
+            <div class="topic-badge" style="background: #667eea">Finance AI</div>
+            <div class="topic-badge" style="background: #f093fb">Accounting AI</div>
+            <div class="topic-badge" style="background: #4facfe">Marketing AI</div>
+        </div>
+
         <div class="search-section">
-            <input type="text" id="searchQuery" placeholder="Search for news (e.g., Apple, finance ai)" value="Apple">
             <input type="date" id="fromDate" value="2025-11-17">
             <select id="sortBy">
                 <option value="popularity">Popularity</option>
                 <option value="publishedAt">Published Date</option>
                 <option value="relevancy">Relevancy</option>
             </select>
-            <button id="searchBtn">Search News</button>
+            <button id="refreshBtn">Refresh News</button>
         </div>
 
         <div id="loading" class="loading hidden">
