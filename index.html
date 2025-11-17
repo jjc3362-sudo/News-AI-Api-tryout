@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News AI App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📰 News AI App</h1>
+            <p>Stay updated with the latest news</p>
+        </header>
+
+        <div class="search-section">
+            <input type="text" id="searchQuery" placeholder="Search for news (e.g., Apple, finance ai)" value="Apple">
+            <input type="date" id="fromDate" value="2025-11-17">
+            <select id="sortBy">
+                <option value="popularity">Popularity</option>
+                <option value="publishedAt">Published Date</option>
+                <option value="relevancy">Relevancy</option>
+            </select>
+            <button id="searchBtn">Search News</button>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Loading news...</p>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+
+        <div id="results" class="results">
+            <div id="totalResults" class="total-results"></div>
+            <div id="articles" class="articles-grid"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
