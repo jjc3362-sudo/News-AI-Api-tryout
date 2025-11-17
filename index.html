@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News AI App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📰 AI News Dashboard</h1>
+            <p>Tracking the latest in Finance AI, Accounting AI & Marketing AI</p>
+        </header>
+
+        <div class="topics-info">
+            <div class="topic-badge" style="background: #667eea">Finance AI</div>
+            <div class="topic-badge" style="background: #f093fb">Accounting AI</div>
+            <div class="topic-badge" style="background: #4facfe">Marketing AI</div>
+        </div>
+
+        <div class="search-section">
+            <input type="date" id="fromDate" value="2025-11-17">
+            <select id="sortBy">
+                <option value="popularity">Popularity</option>
+                <option value="publishedAt">Published Date</option>
+                <option value="relevancy">Relevancy</option>
+            </select>
+            <button id="refreshBtn">Refresh News</button>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Loading news...</p>
+        </div>
+
+        <div id="error" class="error hidden"></div>
+
+        <div id="results" class="results">
+            <div id="totalResults" class="total-results"></div>
+            <div id="articles" class="articles-grid"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
