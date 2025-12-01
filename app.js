@@ -1,6 +1,6 @@
 // News API configuration
 const API_KEY = 'a52d485047e5453bb57836708cf90ad8';
-const API_BASE_URL = 'https://newsapi.org/vhttps://newsapi.org/v2/everything?q=Apple&from=2025-11-17&sortBy=popularity&apiKey=API_KEY2/everything';
+const API_BASE_URL = 'https://newsapi.org/v2/everything?';
 
 // Topics to fetch
 const TOPICS = [
