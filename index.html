@@ -13,19 +13,28 @@
             <p>Tracking the latest in Finance AI, Accounting AI & Marketing AI</p>
         </header>
 
-        <div class="topics-info">
-            <div class="topic-badge" style="background: #667eea">Finance AI</div>
-            <div class="topic-badge" style="background: #f093fb">Accounting AI</div>
-            <div class="topic-badge" style="background: #4facfe">Marketing AI</div>
+        <div class="topics-section">
+            <p class="topics-label">Monitored Topics:</p>
+            <div class="topics-info">
+                <div class="topic-badge" style="background: #667eea">Finance AI</div>
+                <div class="topic-badge" style="background: #f093fb">Accounting AI</div>
+                <div class="topic-badge" style="background: #4facfe">Marketing AI</div>
+            </div>
         </div>
 
         <div class="search-section">
-            <input type="date" id="fromDate" value="2025-11-17">
-            <select id="sortBy">
-                <option value="popularity">Popularity</option>
-                <option value="publishedAt">Published Date</option>
-                <option value="relevancy">Relevancy</option>
-            </select>
+            <div class="filter-group">
+                <label for="fromDate">From Date:</label>
+                <input type="date" id="fromDate">
+            </div>
+            <div class="filter-group">
+                <label for="sortBy">Sort By:</label>
+                <select id="sortBy">
+                    <option value="popularity">Popularity</option>
+                    <option value="publishedAt">Published Date</option>
+                    <option value="relevancy">Relevancy</option>
+                </select>
+            </div>
             <button id="refreshBtn">Refresh News</button>
         </div>
 

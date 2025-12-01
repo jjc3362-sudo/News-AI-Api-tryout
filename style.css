@@ -34,22 +34,35 @@ header p {
     opacity: 0.9;
 }
 
+.topics-section {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.topics-label {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
 .topics-info {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 20px;
     flex-wrap: wrap;
 }
 
 .topic-badge {
     color: white;
-    padding: 12px 24px;
+    padding: 10px 20px;
     border-radius: 25px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    display: inline-block;
 }
 
 .search-section {
@@ -59,10 +72,22 @@ header p {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     margin-bottom: 30px;
     display: flex;
-    gap: 15px;
+    gap: 20px;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
 }
 
 .search-section input[type="date"],
@@ -74,6 +99,7 @@ header p {
     background: white;
     cursor: pointer;
     transition: border-color 0.3s;
+    min-width: 160px;
 }
 
 .search-section input[type="date"]:focus,
@@ -294,6 +320,11 @@ header p {
 
     .search-section {
         flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        width: 100%;
     }
 
     .search-section input[type="date"],
