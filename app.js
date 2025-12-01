@@ -9,6 +9,15 @@ const TOPICS = [
     { query: 'Marketing ai', label: 'Marketing AI', color: '#4facfe' }
 ];
 
+// Set today's date as default
+function getTodayDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 // DOM elements
 const loading = document.getElementById('loading');
 const error = document.getElementById('error');
@@ -18,16 +27,14 @@ const fromDate = document.getElementById('fromDate');
 const sortBy = document.getElementById('sortBy');
 const refreshBtn = document.getElementById('refreshBtn');
 
+// Set default date to today
+fromDate.value = getTodayDate();
+
 // Fetch news for a single topic
 async function fetchTopicNews(topic, date, sort) {
-    // Build URL without 'from' parameter if date is empty or causing issues
-    // News API free tier has date restrictions
-    let url = `${API_BASE_URL}?q=${encodeURIComponent(topic.query)}&sortBy=${sort}&apiKey=${API_KEY}`;
-
-    // Only add 'from' parameter if date is provided and valid
-    if (date) {
-        url += `&from=${date}`;
-    }
+    // Build URL - always include the 'from' date to avoid API 426 errors
+    // News API free tier requires date parameter
+    const url = `${API_BASE_URL}?q=${encodeURIComponent(topic.query)}&from=${date}&sortBy=${sort}&apiKey=${API_KEY}`;
 
     const req = new Request(url);
     const response = await fetch(req);
