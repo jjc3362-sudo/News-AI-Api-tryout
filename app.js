@@ -20,13 +20,21 @@ const refreshBtn = document.getElementById('refreshBtn');
 
 // Fetch news for a single topic
 async function fetchTopicNews(topic, date, sort) {
-    const url = `${API_BASE_URL}?q=${encodeURIComponent(topic.query)}&from=${date}&sortBy=${sort}&apiKey=${API_KEY}`;
+    // Build URL without 'from' parameter if date is empty or causing issues
+    // News API free tier has date restrictions
+    let url = `${API_BASE_URL}?q=${encodeURIComponent(topic.query)}&sortBy=${sort}&apiKey=${API_KEY}`;
+
+    // Only add 'from' parameter if date is provided and valid
+    if (date) {
+        url += `&from=${date}`;
+    }
 
     const req = new Request(url);
     const response = await fetch(req);
 
     if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(`API Error ${response.status}: ${response.statusText}. ${errorText}`);
     }
 
     const data = await response.json();
