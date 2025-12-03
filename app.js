@@ -1,6 +1,6 @@
-// News API configuration
-const API_KEY = 'a52d485047e5453bb57836708cf90ad8';
-const API_BASE_URL = 'https://newsapi.org/v2/everything';
+// The News API configuration
+const API_TOKEN = 'bX4mX0FdSWugKyADeKPEBAUG9T1LhkeGXECRWixV';
+const API_BASE_URL = 'https://api.thenewsapi.com/v1/news/all';
 
 // Topics to fetch
 const TOPICS = [
@@ -32,29 +32,42 @@ fromDate.value = getTodayDate();
 
 // Fetch news for a single topic
 async function fetchTopicNews(topic, date, sort) {
-    // Build URL - always include the 'from' date to avoid API 426 errors
-    // News API free tier requires date parameter
-    const url = `${API_BASE_URL}?q=${encodeURIComponent(topic.query)}&from=${date}&sortBy=${sort}&apiKey=${API_KEY}`;
+    // Build URL for The News API
+    // Parameters: search, language, locale, published_after, sort, api_token
+    const sortMap = {
+        'popularity': 'relevance_score',
+        'publishedAt': 'published_at',
+        'relevancy': 'relevance_score'
+    };
 
-    const req = new Request(url);
-    const response = await fetch(req);
+    const url = `${API_BASE_URL}?search=${encodeURIComponent(topic.query)}&language=en&locale=us&published_after=${date}&sort=${sortMap[sort] || 'relevance_score'}&api_token=${API_TOKEN}`;
+
+    const response = await fetch(url);
 
     if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`API Error ${response.status}: ${response.statusText}. ${errorText}`);
     }
 
-    const data = await response.json();
+    const result = await response.json();
 
-    if (data.status === 'ok') {
-        // Add category info to each article
-        return data.articles.map(article => ({
-            ...article,
+    // The News API returns data in result.data array
+    if (result.data && Array.isArray(result.data)) {
+        // Normalize the article format to match our display function
+        return result.data.map(article => ({
+            source: { name: article.source || 'Unknown Source' },
+            author: article.author || null,
+            title: article.title,
+            description: article.description || article.snippet,
+            url: article.url,
+            urlToImage: article.image_url,
+            publishedAt: article.published_at,
+            content: article.snippet || article.description,
             category: topic.label,
             categoryColor: topic.color
         }));
     } else {
-        throw new Error(data.message || 'Failed to fetch news');
+        throw new Error('Failed to fetch news or no articles found');
     }
 }
 

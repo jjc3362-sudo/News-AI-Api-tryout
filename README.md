@@ -1,40 +1,69 @@
-# News AI App
+# AI News Dashboard
 
-A modern, responsive web application that fetches and displays news articles using the News API.
+A modern, responsive web application that tracks and displays news articles for **Finance AI**, **Accounting AI**, and **Marketing AI** topics using The News API.
 
 ## Features
 
-- 🔍 Search for news by keyword
-- 📅 Filter news by date
-- 🔥 Sort by popularity, relevancy, or published date
+- 🤖 Automatically fetches news for three AI categories
+- 📅 Filter news by date (defaults to today)
+- 🔥 Sort by relevance or published date
 - 📱 Fully responsive design
 - 🎨 Modern, gradient UI with smooth animations
-- ⚡ Real-time news fetching
+- ⚡ Real-time news fetching with color-coded category badges
+- ✅ No CORS issues - works directly in the browser!
 
-## How to Use
+## Quick Start
 
-1. **Open the app**: Simply open `index.html` in your web browser
-2. **Search**: Enter a search term (e.g., "Apple", "finance ai", "technology")
-3. **Filter**: Select a date to filter news from that date onwards
-4. **Sort**: Choose how to sort results (popularity, relevancy, or published date)
-5. **Click Search**: The app will fetch and display matching news articles
-6. **Read more**: Click on any article's "Read Full Article" link to view the complete story
+1. **Clone the repository**
+```bash
+git clone <your-repo-url>
+cd News-AI-Api-tryout
+```
 
-## Files
+2. **Open in browser**
+Simply open `index.html` in your web browser - that's it!
 
-- `index.html` - Main HTML structure
-- `app.js` - JavaScript logic for fetching and displaying news
-- `style.css` - Styling and responsive design
+The app will automatically fetch news for Finance AI, Accounting AI, and Marketing AI topics.
+
+## How It Works
+
+The app uses [The News API](https://www.thenewsapi.com/) which allows browser requests without CORS restrictions. Each refresh fetches the latest articles from all three AI categories and displays them with color-coded badges.
+
+## Project Structure
+
+```
+News-AI-Api-tryout/
+├── index.html          # Main HTML structure
+├── app.js             # JavaScript for API calls and rendering
+├── style.css          # Styling and responsive design
+└── README.md          # This file
+```
+
+## Monitored Topics
+
+The app automatically tracks news for these three AI categories:
+- **Finance AI** (purple badge)
+- **Accounting AI** (pink badge)
+- **Marketing AI** (blue badge)
+
+## Customization
+
+To track different topics, edit the `TOPICS` array in `app.js`:
+
+```javascript
+const TOPICS = [
+    { query: 'your search', label: 'Your Label', color: '#hexcolor' },
+    // add more topics...
+];
+```
 
 ## API
 
-This app uses the [News API](https://newsapi.org/) to fetch news articles.
+This app uses [The News API](https://www.thenewsapi.com/) - a news aggregation service that:
+- Allows browser requests (no CORS issues)
+- Provides articles from thousands of sources
+- Has a generous free tier
 
-## Live Demo
+## No Backend Required
 
-To run the app locally:
-1. Clone this repository
-2. Open `index.html` in your web browser
-3. Start searching for news!
-
-No build process or dependencies required - it's a pure HTML/CSS/JavaScript application!
+Unlike other news APIs, this solution works entirely in the browser with no backend server needed!
